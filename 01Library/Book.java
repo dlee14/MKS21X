@@ -7,7 +7,7 @@ public class Book {
 		isbn = "";
 	}
 
-	public Book(String author, String tile, String isbn) {
+	public Book(String author, String title, String isbn) {
 		this.author = author;
 		this.title = title;
 		this.isbn = isbn;
@@ -35,6 +35,10 @@ public class Book {
 
 	private void setIsbn(String isbn) {
 		this.isbn = isbn;
+	}
+
+	public String toString() {
+		return getTitle() + ", " + getAuthor() + ", " + getIsbn();
 	}
 
 }
