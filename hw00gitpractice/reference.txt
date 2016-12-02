@@ -1,5 +1,15 @@
 clone
-add
-commit
-push
+- Clone a repository into a new directory
+- git clone “clone link from GitHub”
 
+add
+- Add file contents to the index
+- git add “file name” 
+
+commit
+- Record changes to the repository
+- git commit -m “message”
+
+push
+- Update remote refs along with associated objects
+- git push
