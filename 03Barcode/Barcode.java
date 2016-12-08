@@ -3,8 +3,12 @@ public class Barcode implements Comparable<Barcode> {
 	private int _checkDigit;
 
 	public Barcode(String zip) {
-		zip = _zip;
-		_checkDigit = checkSum();
+		if (zip.length() == 5) {
+			_zip = zip;
+			_checkDigit = checkSum();
+		} else {
+			throw new IllegalArgumentException("Your zip must be 5 digits!");
+		}
 	}
 
 	public Barcode clone() {
@@ -15,7 +19,7 @@ public class Barcode implements Comparable<Barcode> {
 	private int checkSum() {
 		int result = 0;
 		for (int i = 0; i < _zip.length(); i++) {
-			result += (int) _zip.charAt(i);
+			result += (int)_zip.charAt(i);
 		}
 		result = result % 10;
 		return result;
@@ -25,25 +29,25 @@ public class Barcode implements Comparable<Barcode> {
 		String result = "|";
 		for (int i = 0; i < _zip.length(); i++) {
 			switch (_zip.charAt(i)) {
-				case 1: result += ":::||";
+				case '1': result += ":::||";
 						break;
-				case 2: result += "::|:|";
+				case '2': result += "::|:|";
 						break;
-				case 3: result += "::||:";
+				case '3': result += "::||:";
 						break;
-				case 4: result += ":|::|";
+				case '4': result += ":|::|";
 						break;
-				case 5: result += ":|:|:";
+				case '5': result += ":|:|:";
 						break;
-				case 6: result += ":||::";
+				case '6': result += ":||::";
 						break;
-				case 7: result += "|:::|";
+				case '7': result += "|:::|";
 						break;
-				case 8: result += "|::|:";
+				case '8': result += "|::|:";
 						break;
-				case 9: result += "|:|::";
+				case '9': result += "|:|::";
 						break;
-				case 0: result += "||:::";
+				case '0': result += "||:::";
 						break;
 			}
 		}
@@ -52,12 +56,17 @@ public class Barcode implements Comparable<Barcode> {
 	}
 
 	public int compareTo(Barcode other) {
-		return 0;
+		String o = _zip + checkSum() ;
+		String p = other._zip + other.checkSum();
+		return o.compareTo(p);
 	}
 
 	public static void main(String[] args) {
-		Barcode barcode = new Barcode("11111");
+		Barcode barcode1 = new Barcode("12342");
+		Barcode barcode2 = new Barcode("26343");
 
-		System.out.println(barcode.toString());
+		System.out.println(barcode1);
+		System.out.println(barcode1.clone());
+		System.out.println(barcode1.compareTo(barcode2));
 	}
 }
