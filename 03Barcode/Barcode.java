@@ -38,7 +38,7 @@ public class Barcode implements Comparable<Barcode> {
 
 	public String toString() {
 		String result = _zip + _checkDigit;
-		result += " " + toCode(result);
+		result += " " + toCode(_zip);
 		return result;
 	}
 
@@ -85,62 +85,57 @@ public class Barcode implements Comparable<Barcode> {
 
 	private static boolean validCode(String code) {
 		boolean result = true;
+		if (code.length() != 32) {
+			throw new IllegalArgumentException("Your barcode's length is not 32!");
+		}
+		if (code.charAt(0) != '|' || code.charAt(31) != '|') {
+			throw new IllegalArgumentException("Your barcode either does not start or end with '|'");
+		}
 		for (int i = 0; i < code.length(); i++) {
-			if (code.charAt(i) != '|' || code.charAt(i) != ':') {
-				result = false;
+			if (code.charAt(i) != '|' && code.charAt(i) != ':') {
+				throw new IllegalArgumentException("Your barcode contains a non-barcode character!");
 			}
 		}
 		return result;
 	}
 
 	public static String toZip(String code) {
-		String result = "";
-		String zip = code.substring(1);
-		for (int i = 0; i < code.length(); i += 5) {
-			if (zip.length() >= 6) {
-				switch (zip.substring(0,5)) {
-					case ":::||": result += "1";
-					break;
-					case "::|:|": result += "2";
-					break;
-					case "::||:": result += "3";
-					break;
-					case ":|::|": result += "4";
-					break;
-					case ":|:|:": result += "5";
-					break;
-					case ":||::": result += "6";
-					break;
-					case "|:::|": result += "7";
-					break;
-					case "|::|:": result += "8";
-					break;
-					case "|:|::": result += "9";
-					break;
-					case "||:::": result += "0";
-					break;
-					default: throw new IllegalArgumentException("Your code contains an invalid code!");
+		if (validCode(code)) {
+			String result = "";
+			String zip = code.substring(1);
+			for (int i = 0; i < code.length(); i += 5) {
+				if (zip.length() >= 6) {
+					switch (zip.substring(0,5)) {
+						case ":::||": result += "1";
+						break;
+						case "::|:|": result += "2";
+						break;
+						case "::||:": result += "3";
+						break;
+						case ":|::|": result += "4";
+						break;
+						case ":|:|:": result += "5";
+						break;
+						case ":||::": result += "6";
+						break;
+						case "|:::|": result += "7";
+						break;
+						case "|::|:": result += "8";
+						break;
+						case "|:|::": result += "9";
+						break;
+						case "||:::": result += "0";
+						break;
+						default: throw new IllegalArgumentException("Your barcode contains an invalid code!");
+					}
+					zip = zip.substring(5);
 				}
-				zip = zip.substring(5);
 			}
+			if (checkSum(result.substring(0,5)) + '0' != result.charAt(5)) {
+				throw new IllegalArgumentException("Your checksum is invalid!");
+			}
+			return result;
 		}
-	
-		if (result.charAt(5) != checkSum(result.substring(0,5))) {
-			throw new IllegalArgumentException("Your checksum is invalid!");
-		}
-		return result;
-	}
-
-	public static void main(String[] args) {
-		Barcode barcode1 = new Barcode("74252");
-		Barcode barcode2 = new Barcode("73654");
-
-		System.out.println(barcode1);
-
-		System.out.println(toCode("74252"));
-		System.out.println(toZip("||:::|:|::|::|:|:|:|:::|:|||:::|"));
-		System.out.println(toZip("||:::|:|::|::|:|:|:|:::|:|||:::|"));
-
-
+		return "";
 	}
 }
