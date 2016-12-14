@@ -24,6 +24,34 @@ public class Sorts {
 		}
 	}
 
+	public static void insertionSort(int[] data) {
+		// First step is to find what is in order
+		// Next is to find where I should put my next number
+		int swap = 0;
+		int index = 0;
+		for (int i = 0; i < data.length - 1; i++) {
+			//System.out.println("start of a for loop");
+			if (data[i] > data[i + 1]) {
+				index = i + 1;
+				while (index >= 0 && data[index] < data[index - 1]) {
+					//System.out.println("start of a while loop");
+					swap = data[index];
+					data[index] = data[index - 1];
+					data[index - 1] = swap;
+					index --;
+				}
+				// for (int j = i + 1; j > 0; j--) {
+				// 	if (data[j] < data[j - 1]) {
+				// 		swap = data[j];
+				// 		data[j] = data[j - 1];
+				// 		data[j - 1] = swap;
+				// 	}
+				// }
+			}
+
+		}
+	}
+
 	public static void print(int[] data) {
 		for (int i = 0; i < data.length; i++) {
 			if (i > 0) {
@@ -32,13 +60,12 @@ public class Sorts {
 			System.out.print(data[i]);
 		}
 		System.out.println("");
-
 	}
 
 	public static void main(String[] args) {
-		int[] data = {2,6,3,1,6,2,3,9,4,5,3,5,2,3,6,3,0};
-		selectionSort(data);
-
+		int[] data = {1,5,4,7,3,4,9,2,1,2};
+		print(data);
+		insertionSort(data);
 		print(data);
 
 	}
